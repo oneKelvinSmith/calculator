@@ -1,12 +1,13 @@
-require 'spec_helper'
-require 'calculator/operator'
+require 'simple_calc/operator'
 
-RSpec.describe Operator do
+RSpec.describe SimpleCalc::Operator do
   describe 'precedence' do
-    let(:sum) { Operator.new(symbol: '+') }
-    let(:sub) { Operator.new(symbol: '-') }
-    let(:div) { Operator.new(symbol: '/') }
-    let(:mul) { Operator.new(symbol: '*') }
+    let(:creator) { SimpleCalc::Operator.public_method(:new) }
+
+    let(:sum) { creator.call(symbol: '+') }
+    let(:sub) { creator.call(symbol: '-') }
+    let(:div) { creator.call(symbol: '/') }
+    let(:mul) { creator.call(symbol: '*') }
 
     it 'should know which option has precedence' do
       expect(sum.precedent(sub)).to be sum

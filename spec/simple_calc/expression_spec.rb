@@ -1,10 +1,10 @@
 # coding: utf-8
 
-require 'spec_helper'
+require 'simple_calc/expression'
 
-RSpec.describe Expression do
+RSpec.describe SimpleCalc::Expression do
   describe '#valid?' do
-    let(:expression) { Expression.new(formula: formula) }
+    let(:expression) { SimpleCalc::Expression.new(formula: formula) }
 
     describe 'invalid expressions' do
       describe 'nothing' do

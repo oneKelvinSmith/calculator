@@ -8,7 +8,7 @@ A simple calculator...
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'calculator'
+gem 'simple_calc
 ```
 
 And then execute:
@@ -17,7 +17,7 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install calculator
+    $ gem install simple_calc
 
 ## Usage
 

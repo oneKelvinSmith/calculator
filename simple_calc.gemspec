@@ -1,17 +1,17 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'calculator/version'
+require 'simple_calc/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = 'calculator'
-  spec.version       = Calculator::VERSION
+  spec.name          = 'simple_calc'
+  spec.version       = SimpleCalc::VERSION
   spec.authors       = ['Kelvin Smith']
   spec.email         = ['oneKelvinSmith@gmail.com']
 
   spec.summary       = 'A simple calculator'
 
-  spec.homepage      = 'http://www.github.com/oneKelvinSmith/calculator'
+  spec.homepage      = 'http://www.github.com/oneKelvinSmith/simple_calc'
   spec.license       = 'MIT'
 
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }

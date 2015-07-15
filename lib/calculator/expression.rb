@@ -1,21 +1,23 @@
+# -*- coding: utf-8 -*-
+
 class Expression
-  def initialize(args)
-    @text = args[:text] || blank_text
+  def initialize(args = {})
+    @formula = args[:formula] || empty
   end
 
   def valid?
-    !valid_text.empty?
+    !(formula.gsub(/[^#{valid_characters}]/, empty).strip).empty?
   end
 
   private
 
-  attr_reader :text
+  attr_reader :formula
 
-  def blank_text
-    ''
+  def valid_characters
+    '\d\+\/\-\*\(\)\s'
   end
 
-  def valid_text
-    text.gsub(/[a-z]/, blank_text).strip
+  def empty
+    ''
   end
 end

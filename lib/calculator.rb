@@ -8,7 +8,7 @@ module Calculator
     expressions = read_expressions(file)
     evaluator.evaluate(expressions)
   rescue Errno::ENOENT
-    'File not found'
+    'Please make sure that the correct filename is provided'
   end
 
   def self.read_expressions(file)

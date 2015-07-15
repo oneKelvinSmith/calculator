@@ -8,18 +8,17 @@ RSpec.describe Calculator do
   let(:expression) { double('expression') }
 
   describe '.new_expression' do
-    let(:factory) { spy('expression_factory') }
-
-    it 'uses the factory provided' do
-      Calculator.new_expression(formula: '1 + 1', factory: factory)
-      expect(factory).to have_received(:call).with(formula: '1 + 1')
-    end
 
     it 'return a new expression for a given formula' do
       allow(Expression).to receive(:new).and_return(expression)
 
       new_expression = Calculator.new_expression(formula: '3 - 2')
 
+      expect(new_expression).to be expression
+    end
+    it 'uses the expression factory provided' do
+      new_expression = Calculator.new_expression formula: 'irrelvant',
+                                                 factory: -> (_) { expression }
       expect(new_expression).to be expression
     end
   end

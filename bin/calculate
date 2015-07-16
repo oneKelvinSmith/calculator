@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
 
-require_relative 'calculator'
+require 'simple_calc'
 
-puts Calculator.run ARGV[0]
+puts SimpleCalc.run ARGV[0]

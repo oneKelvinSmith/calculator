@@ -19,10 +19,15 @@ Or install it yourself as:
 
     $ gem install simple_calc
 
+Alternatively install gem form source via:
+
+    $ git clone https://github.com/oneKelvinSmith/simple_calc.git
+    $ cd simple_calc
+    $ rake install
+
 ## Usage
 
-TODO: Write usage instructions here
-
+    $ calculate file_with_expressions
 
 ## License
 

@@ -34,5 +34,11 @@ RSpec.describe SimpleCalc::Calculator do
 
       expect(new_expressions).to eq expressions
     end
+
+    it 'does not create expressions for an empty file' do
+      expect(calculator).not_to receive(:new_expression)
+
+      calculator.read_expressions('spec/data/empty_file.txt')
+    end
   end
 end

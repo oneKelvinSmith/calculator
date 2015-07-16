@@ -14,10 +14,11 @@ RSpec.describe SimpleCalc do
     let(:syntax_error)   { SimpleCalc::SyntaxError }
 
     it 'evaluates expressions using given evaluator' do
-      expressions = [expression, expression]
-      allow(calculator).to receive(:read_expressions).and_return(expressions)
+      allow(calculator).to receive(:read_expressions).and_return([expression])
+
       SimpleCalc.run('some_file.txt', calculator: calculator)
-      expect(calculator).to have_received(:evaluate).with(expressions)
+
+      expect(calculator).to have_received(:calculate).with([expression])
     end
 
     it 'fails gracefully when no file is found' do

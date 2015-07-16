@@ -15,5 +15,9 @@ module SimpleCalc
       expression = source.call(formula: formula)
       return expression if expression.validate!
     end
+
+    def calculate(expressions)
+      expressions.map(&:evaluate)
+    end
   end
 end

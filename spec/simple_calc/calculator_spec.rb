@@ -6,7 +6,6 @@ RSpec.describe SimpleCalc::Calculator do
   let(:expression)   { double('expression') }
   let(:calculator)   { SimpleCalc::Calculator.new }
 
-
   describe '#new_expression' do
     let(:source) { -> (_) { expression } }
     let(:syntax_error) { SimpleCalc::SyntaxError }
@@ -45,6 +44,7 @@ RSpec.describe SimpleCalc::Calculator do
 
   describe '#read_expressions' do
     let(:expressions)  { [expression, expression] }
+
     it 'parses an input file into expressions' do
       allow(calculator).to receive(:new_expression).and_return(expression)
 
@@ -57,6 +57,16 @@ RSpec.describe SimpleCalc::Calculator do
       expect(calculator).not_to receive(:new_expression)
 
       calculator.read_expressions('spec/data/empty_file.txt')
+    end
+  end
+
+  describe '#calculate' do
+    let(:result) { double 'result' }
+
+    it 'collects the results of expression evaluations' do
+      allow(expression).to receive(:evaluate).and_return result
+
+      expect(calculator.calculate([expression])).to eq [result]
     end
   end
 end

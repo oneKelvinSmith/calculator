@@ -1,9 +1,12 @@
+require 'simple_calc/parser'
+require 'simple_calc/evaluator'
+
 module SimpleCalc
   class Expression
     def initialize(args = {})
       @formula   = args[:formula] || empty
-      @parser    = args[:parser] || Parser.new
-      @evaluator = args[:evaluator] || Evaluator.new
+      @parser    = args[:parser] || SimpleCalc::Parser.new
+      @evaluator = args[:evaluator] || SimpleCalc::Evaluator.new
     end
 
     def valid?

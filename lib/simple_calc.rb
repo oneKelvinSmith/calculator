@@ -5,7 +5,7 @@ module SimpleCalc
   def self.run(file, options = {})
     calculator = options[:calculator] || SimpleCalc::Calculator.new
     expressions = calculator.read_expressions(file)
-    calculator.evaluate(expressions)
+    calculator.calculate(expressions)
   rescue Errno::ENOENT
     'Please ensure that the correct filename is provided'
   rescue SimpleCalc::SyntaxError

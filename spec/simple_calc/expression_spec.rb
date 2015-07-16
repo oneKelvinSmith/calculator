@@ -4,9 +4,9 @@ require 'simple_calc/expression'
 require 'simple_calc/errors'
 
 RSpec.describe SimpleCalc::Expression do
-  describe '#valid?' do
-    let(:expression) { SimpleCalc::Expression.new(formula: formula) }
+  let(:expression) { SimpleCalc::Expression.new(formula: formula) }
 
+  describe '#valid?' do
     describe 'invalid expressions' do
       describe 'nothing' do
         let(:formula) { nil }
@@ -75,21 +75,55 @@ RSpec.describe SimpleCalc::Expression do
         specify { expect(expression).to be_valid }
       end
     end
+  end
 
-    describe '#validate!' do
-      let(:formula)      { 'formula' }
-      let(:syntax_error) { SimpleCalc::SyntaxError }
+  describe '#validate!' do
+    let(:formula)      { 'formula' }
+    let(:syntax_error) { SimpleCalc::SyntaxError }
 
-      it 'raises a syntax error if expression is not valid' do
-        allow(expression).to receive(:valid?).and_return false
+    it 'raises a syntax error if expression is not valid' do
+      allow(expression).to receive(:valid?).and_return false
 
-        expect { expression.validate! }.to raise_error syntax_error
-      end
+      expect { expression.validate! }.to raise_error syntax_error
+    end
 
-      it 'returns true for valid expression' do
-        allow(expression).to receive(:valid?).and_return true
-        expect(expression.validate!).to be true
-      end
+    it 'returns true for valid expression' do
+      allow(expression).to receive(:valid?).and_return true
+      expect(expression.validate!).to be true
+    end
+  end
+
+  describe '#evaluate' do
+    let(:formula)        { 'formula' }
+    let(:parsed_formula) { 'parsed formula' }
+    let(:result)         { 'result' }
+    let(:parser)         { spy('parser') }
+    let(:evaluator)      { spy('evaluator') }
+    let(:expression) do
+      SimpleCalc::Expression.new(formula: formula,
+                                 parser: parser,
+                                 evaluator: evaluator)
+    end
+
+    it 'parses the given formula' do
+      expression.evaluate
+
+      expect(parser).to have_received(:parse).with formula
+    end
+
+    it 'evaluates the parsed formula' do
+      allow(parser).to receive(:parse).and_return parsed_formula
+
+      expression.evaluate
+
+      expect(evaluator).to have_received(:evaluate).with parsed_formula
+    end
+
+    it 'returns the result of the evaluation' do
+      allow(parser).to receive(:parse).and_return parsed_formula
+      allow(evaluator).to receive(:evaluate).and_return result
+
+      expect(expression.evaluate).to eq result
     end
   end
 end

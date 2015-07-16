@@ -1,7 +1,9 @@
 module SimpleCalc
   class Expression
     def initialize(args = {})
-      @formula = args[:formula] || empty
+      @formula   = args[:formula] || empty
+      @parser    = args[:parser] || Parser.new
+      @evaluator = args[:evaluator] || Evaluator.new
     end
 
     def valid?
@@ -16,9 +18,14 @@ module SimpleCalc
       end
     end
 
+    def evaluate
+      parsed_formula = parser.parse formula
+      evaluator.evaluate(parsed_formula)
+    end
+
     private
 
-    attr_reader :formula
+    attr_reader :formula, :parser, :evaluator
 
     def valid_characters
       '\d\+\/\-\*\(\)\s'

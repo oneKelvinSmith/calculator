@@ -15,5 +15,9 @@ RSpec.describe SimpleCalc::Evaluator do
       specify { expect(evaluator.evaluate('21 21 +')).to eq '42' }
       specify { expect(evaluator.evaluate('5 3 -')).to eq '2' }
     end
+
+    describe 'precision of 3 for floating point numbers' do
+      specify { expect(evaluator.evaluate('2 3 /')).to eq '0.667' }
+    end
   end
 end

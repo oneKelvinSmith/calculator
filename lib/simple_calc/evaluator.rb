@@ -7,7 +7,7 @@ module SimpleCalc
       tokens.each do |token|
         shunt(token, evaluation)
       end
-      Integer(evaluation.pop).to_s
+      normalize(evaluation.pop)
     end
 
     private
@@ -20,6 +20,14 @@ module SimpleCalc
         first, second = evaluation.pop(2)
         evaluation.push(first.send(token, second))
       end
+    end
+
+    def normalize(number)
+      if number % 1 == 0
+        Integer(number)
+      else
+        number.round(3)
+      end.to_s
     end
   end
 end

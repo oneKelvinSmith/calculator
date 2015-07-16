@@ -1,6 +1,7 @@
 # coding: utf-8
 
 require 'simple_calc/expression'
+require 'simple_calc/errors'
 
 RSpec.describe SimpleCalc::Expression do
   describe '#valid?' do
@@ -72,6 +73,22 @@ RSpec.describe SimpleCalc::Expression do
       describe 'a complex formula' do
         let(:formula) { '(5+2) +1+7*7-(3+4)' }
         specify { expect(expression).to be_valid }
+      end
+    end
+
+    describe '#validate!' do
+      let(:formula)      { 'formula' }
+      let(:syntax_error) { SimpleCalc::SyntaxError }
+
+      it 'raises a syntax error if expression is not valid' do
+        allow(expression).to receive(:valid?).and_return false
+
+        expect { expression.validate! }.to raise_error syntax_error
+      end
+
+      it 'returns true for valid expression' do
+        allow(expression).to receive(:valid?).and_return true
+        expect(expression.validate!).to be true
       end
     end
   end

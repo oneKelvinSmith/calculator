@@ -1,4 +1,5 @@
 require 'simple_calc/expression'
+require 'simple_calc/errors'
 
 module SimpleCalc
   class Calculator
@@ -11,7 +12,8 @@ module SimpleCalc
     def new_expression(args)
       source = args[:source] || SimpleCalc::Expression.public_method(:new)
       formula = args[:formula]
-      source.call(formula: formula)
+      expression = source.call(formula: formula)
+      return expression if expression.validate!
     end
   end
 end

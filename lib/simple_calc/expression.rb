@@ -8,6 +8,14 @@ module SimpleCalc
       !(formula.gsub(/[^#{valid_characters}]/, empty).strip).empty?
     end
 
+    def validate!
+      if valid?
+        true
+      else
+        fail SyntaxError
+      end
+    end
+
     private
 
     attr_reader :formula

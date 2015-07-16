@@ -1,25 +1,25 @@
 module SimpleCalc
   class Evaluator
-    # def evaluate(function)
-    #   tokens = function.split
-    #   evaluation = []
+    def evaluate(formula)
+      tokens = formula.split
+      evaluation = []
 
-    #   tokens.each do |token|
-    #     shunt(token)
-    #   end
-    #   evaluation.pop
-    # end
+      tokens.each do |token|
+        shunt(token, evaluation)
+      end
+      Integer(evaluation.pop).to_s
+    end
 
-    # private
+    private
 
-    # def shunt(token)
-    #   case token
-    #   when /\d/
-    #     evaluation.push(token.to_f)
-    #   when '-', '/', '*', '+'
-    #     first, second = evaluation.pop(2)
-    #     evaluation.push(first.send(token, second))
-    #   end
-    # end
+    def shunt(token, evaluation)
+      case token
+      when /\d/
+        evaluation.push(token.to_f)
+      when '-', '/', '*', '+'
+        first, second = evaluation.pop(2)
+        evaluation.push(first.send(token, second))
+      end
+    end
   end
 end

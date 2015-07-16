@@ -1,63 +1,69 @@
+require 'simple_calc/tokenizer'
+
 module SimpleCalc
   class Parser
+    def initialize(args = {})
+      @tokenizer = args[:tokenizer] || Tokenizer.new
+      @tokens = []
+      @operators = []
+    end
+
     def parse(formula)
-      tokens = []
-      operators = []
+      reset
       tokenize(formula).each do |token|
-        shunt(token, operators, tokens)
+        shunt(token)
       end
       tokens << operators.pop until operators.empty?
       formulate(tokens)
     end
 
+    private
+
+    attr_accessor :tokens, :operators, :tokenizer
+
+    def reset
+      @tokens = []
+      @operators = []
+    end
+
     def tokenize(formula)
-      formula.gsub(allowed_tokens).map(&:to_s)
+      tokenizer.tokenize(formula)
     end
 
     def formulate(tokens)
-      tokens.join(' ')
+      tokenizer.formulate(tokens)
     end
 
-    private
-
-    def shunt(token, operators, tokens)
+    def shunt(token)
       case token
       when '-', '/', '*', '+'
-        shunt_operators(token, operators, tokens)
+        shunt_operators(token)
       when '('
-        shunt_left_paren(token, operators)
+        shunt_left_paren(token)
       when ')'
-        shunt_right_paren(operators, tokens)
+        shunt_right_paren
       else
-        shunt_number(token, tokens)
+        shunt_number(token)
       end
     end
 
-    def shunt_operators(token, operators, tokens)
+    def shunt_operators(token)
       previous = operators.last
       tokens << operators.pop if precedent?(token, previous)
       operators << token
     end
 
-    def shunt_right_paren(operators, tokens)
+    def shunt_right_paren
       tokens << operators.pop until operators.last == '('
       operators.pop
     end
 
-    def shunt_left_paren(token, operators)
+    def shunt_left_paren(token)
       operators << token
     end
 
-    def shunt_number(token, tokens)
+    def shunt_number(token)
       tokens << token
-    end
-
-    def precedent?(token, previous)
-      !previous.nil? && precedence[token] < precedence[previous]
-    end
-
-    def allowed_tokens
-      %r{^\s|\d+|\*|\+|-|\(|\)|/}
     end
 
     def precedence
@@ -67,6 +73,11 @@ module SimpleCalc
        '/' => 1,
        '*' => 1
       }
+    end
+
+    def precedent?(token, previous)
+      precedence.key?(previous) &&
+        precedence[token] < precedence[previous]
     end
   end
 end

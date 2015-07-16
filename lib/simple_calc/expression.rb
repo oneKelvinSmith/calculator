@@ -19,13 +19,21 @@ module SimpleCalc
     end
 
     def evaluate
-      parsed_formula = parser.parse formula
-      evaluator.evaluate(parsed_formula)
+      @value ||= evaluate_formula(parse(formula))
+      value
     end
 
     private
 
-    attr_reader :formula, :parser, :evaluator
+    attr_reader :formula, :parser, :evaluator, :value
+
+    def parse(formula)
+      parser.parse formula
+    end
+
+    def evaluate_formula(parsed_formula)
+      evaluator.evaluate parsed_formula
+    end
 
     def valid_characters
       '\d\+\/\-\*\(\)\s'

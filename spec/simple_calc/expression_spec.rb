@@ -125,5 +125,12 @@ RSpec.describe SimpleCalc::Expression do
 
       expect(expression.evaluate).to eq result
     end
+
+    it 'memoizes the result' do
+      2.times { expression.evaluate }
+
+      expect(parser).to have_received(:parse).once
+      expect(evaluator).to have_received(:evaluate).once
+    end
   end
 end

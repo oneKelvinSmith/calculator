@@ -4,9 +4,9 @@ require 'simple_calc/expression'
 require 'simple_calc/errors'
 
 RSpec.describe SimpleCalc::Expression do
-  let(:expression) { SimpleCalc::Expression.new(formula: formula) }
-
   describe '#valid?' do
+    let(:expression) { SimpleCalc::Expression.new formula: formula }
+
     describe 'invalid expressions' do
       describe 'nothing' do
         let(:formula) { nil }
@@ -78,55 +78,81 @@ RSpec.describe SimpleCalc::Expression do
   end
 
   describe '#validate!' do
-    let(:formula)      { 'formula' }
-    let(:syntax_error) { SimpleCalc::SyntaxError }
-
     it 'raises a syntax error if expression is not valid' do
+      expression = SimpleCalc::Expression.new formula: 'formula'
+
       allow(expression).to receive(:valid?).and_return false
 
-      expect { expression.validate! }.to raise_error syntax_error
+      expect { expression.validate! }.to raise_error SimpleCalc::SyntaxError
     end
 
     it 'returns true for valid expression' do
+      expression = SimpleCalc::Expression.new formula: 'formula'
+
       allow(expression).to receive(:valid?).and_return true
+
       expect(expression.validate!).to be true
     end
   end
 
   describe '#evaluate' do
-    let(:formula)        { 'formula' }
-    let(:parsed_formula) { 'parsed formula' }
-    let(:result)         { 'result' }
-    let(:parser)         { spy('parser') }
-    let(:evaluator)      { spy('evaluator') }
-    let(:expression) do
-      SimpleCalc::Expression.new(formula: formula,
-                                 parser: parser,
-                                 evaluator: evaluator)
-    end
-
     it 'parses the given formula' do
+      parser = spy 'parser'
+      params = {
+        formula: 'formula',
+        evaluator: spy,
+        parser: parser
+      }
+      expression = SimpleCalc::Expression.new params
+
       expression.evaluate
 
-      expect(parser).to have_received(:parse).with formula
+      expect(parser).to have_received(:parse).with 'formula'
     end
 
     it 'evaluates the parsed formula' do
-      allow(parser).to receive(:parse).and_return parsed_formula
+      parser = spy 'parser'
+      evaluator = spy 'evaluator'
+      params = {
+        formula: 'formula',
+        evaluator: evaluator,
+        parser: parser
+      }
+      expression = SimpleCalc::Expression.new params
+
+      allow(parser).to receive(:parse).and_return 'parsed'
 
       expression.evaluate
 
-      expect(evaluator).to have_received(:evaluate).with parsed_formula
+      expect(evaluator).to have_received(:evaluate).with 'parsed'
     end
 
     it 'returns the result of the evaluation' do
-      allow(parser).to receive(:parse).and_return parsed_formula
-      allow(evaluator).to receive(:evaluate).and_return result
+      parser = spy 'parser'
+      evaluator = spy 'evaluator'
+      params = {
+        formula: 'formula',
+        evaluator: evaluator,
+        parser: parser
+      }
+      expression = SimpleCalc::Expression.new params
 
-      expect(expression.evaluate).to eq result
+      allow(parser).to receive(:parse).and_return 'parsed'
+      allow(evaluator).to receive(:evaluate).and_return 'result'
+
+      expect(expression.evaluate).to eq 'result'
     end
 
     it 'memoizes the result' do
+      parser = spy 'parser'
+      evaluator = spy 'evaluator'
+      params = {
+        formula: 'formula',
+        evaluator: evaluator,
+        parser: parser
+      }
+      expression = SimpleCalc::Expression.new params
+
       2.times { expression.evaluate }
 
       expect(parser).to have_received(:parse).once

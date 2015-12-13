@@ -13,21 +13,41 @@ gem 'simple_calc
 
 And then execute:
 
-    $ bundle
+```bash
+$ bundle
+```
 
 Or install it yourself as:
 
-    $ gem install simple_calc
+```bash
+$ gem install simple_calc
+```
 
 Alternatively install gem form source via:
 
-    $ git clone https://github.com/oneKelvinSmith/simple_calc.git
-    $ cd simple_calc
-    $ rake install
+```bash
+$ git clone https://github.com/oneKelvinSmith/simple_calc.git
+$ cd simple_calc
+$ rake install
+```
 
 ## Usage
 
-    $ calculate file_with_expressions
+Given a file named 'expressions.txt' with these contents:
+
+```
+7+7/7+7*7-7
+(5+2) +1+7*7-(3+4)
+```
+
+Simple calculator will evaluate the expressions like this:
+
+
+```bash
+$ calculate expressions.txt
+50
+50
+```
 
 ## License
 
